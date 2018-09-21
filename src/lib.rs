@@ -162,6 +162,13 @@ impl Canvas {
             self.set(x, y);
         }
     }
+  
+    fn rectangle(&mut self, x1: u32, y1: u32, x2: u32, y2: u32) {
+        self.line(x1, y1, x2, y1);
+        self.line(x1, y1, x1, y2);
+	      self.line(x1, y2, x2, y2);
+	      self.line(x2, y1, x2, y2);
+    }
 }
 
 /// A ‘turtle’ that can walk around a canvas drawing lines.
