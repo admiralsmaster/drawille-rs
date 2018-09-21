@@ -175,8 +175,7 @@ impl Canvas {
     pub fn ellipse_box(&mut self, x1: u32, y1: u32, x2: u32, y2: u32) {
         let delta_x = (x1 as i64 - x2 as i64) / 2;
         let delta_y = (y1 as i64 - y2 as i64) / 2;
-        ellipse_center(
-            canvas,
+        self.ellipse_center(
             (x2 as i64 + delta_x) as u32,
             (y2 as i64 + delta_y) as u32,
             delta_x.abs() as u32,
@@ -193,15 +192,15 @@ impl Canvas {
         let mut err: i64 = b2 - (2 * b as i64 - 1) * a2;
 
         loop {
-            canvas.set(xm + dx, ym + dy);
+            self.set(xm + dx, ym + dy);
             if xm >= dx {
-                canvas.set(xm - dx, ym + dy);
+                self.set(xm - dx, ym + dy);
                 if ym >= dy {
-                    canvas.set(xm - dx, ym - dy);
+                    self.set(xm - dx, ym - dy);
                 }
             }
             if ym >= dy {
-                canvas.set(xm + dx, ym - dy);
+                self.set(xm + dx, ym - dy);
             }
 
             let err_plus = err + err;
@@ -221,9 +220,9 @@ impl Canvas {
         }
         while dx < a {
             dx += 1;
-            canvas.set(xm + dx, ym);
+            self.set(xm + dx, ym);
             if xm >= dx {
-                canvas.set(xm - dx, ym);
+                self.set(xm - dx, ym);
             }
         }
     }
