@@ -171,7 +171,7 @@ impl Canvas {
         self.line(x2, y1, x2, y2);
     }
 
-    /// Draw a eclipse inside the box `(x1, y1)` to `(x2, y2)` onto the `Canvas`.
+    /// Draw a ellipse inside the box `(x1, y1)` to `(x2, y2)` onto the `Canvas`.
     pub fn ellipse_box(&mut self, x1: u32, y1: u32, x2: u32, y2: u32) {
         let delta_x = (x1 as i64 - x2 as i64) / 2;
         let delta_y = (y1 as i64 - y2 as i64) / 2;
@@ -184,7 +184,7 @@ impl Canvas {
         )
     }
 
-    /// Draw a eclipse with the middle `(xm, ym)` and the radius a and b onto the `Canvas`.
+    /// Draw a ellipse with the middle `(xm, ym)` and the radius a and b onto the `Canvas`.
     pub fn ellipse_center(&mut self, xm: u32, ym: u32, a: u32, b: u32) {
         let a2: i64 = a as i64 * a as i64;
         let b2: i64 = b as i64 * b as i64;
