@@ -162,12 +162,70 @@ impl Canvas {
             self.set(x, y);
         }
     }
-  
+
+    /// Draw a rectangle from `(x1, y1)` to `(x2, y2)` onto the `Canvas`.
     pub fn rectangle(&mut self, x1: u32, y1: u32, x2: u32, y2: u32) {
         self.line(x1, y1, x2, y1);
         self.line(x1, y1, x1, y2);
         self.line(x1, y2, x2, y2);
         self.line(x2, y1, x2, y2);
+    }
+
+    /// Draw a eclipse inside the box `(x1, y1)` to `(x2, y2)` onto the `Canvas`.
+    pub fn ellipse_box(canvas: &mut Canvas, x1: u32, y1: u32, x2: u32, y2: u32) {
+        let delta_x = (x1 as i64 - x2 as i64) / 2;
+        let delta_y = (y1 as i64 - y2 as i64) / 2;
+        ellipse_center(
+            canvas,
+            (x2 as i64 + delta_x) as u32,
+            (y2 as i64 + delta_y) as u32,
+            delta_x.abs() as u32,
+            delta_y.abs() as u32
+        )
+    }
+
+    /// Draw a eclipse with the middle `(xm, ym)` and the radius a and b onto the `Canvas`.
+    pub fn ellipse_center(canvas: &mut Canvas, xm: u32, ym: u32, a: u32, b: u32) {
+        let a2: i64 = a as i64 * a as i64;
+        let b2: i64 = b as i64 * b as i64;
+        let mut dx: u32 = 0;
+        let mut dy: u32 = b;
+        let mut err: i64 = b2 - (2 * b as i64 - 1) * a2;
+
+        loop {
+            canvas.set(xm + dx, ym + dy);
+            if xm >= dx {
+                canvas.set(xm - dx, ym + dy);
+                if ym >= dy {
+                    canvas.set(xm - dx, ym - dy);
+                }
+            }
+            if ym >= dy {
+                canvas.set(xm + dx, ym - dy);
+            }
+
+            let err_plus = err + err;
+            let new_err1 = (2 * dx as i64 + 1) * b2;
+            if err_plus < new_err1 {
+                dx += 1;
+                err += new_err1;
+            }
+            let new_err2 = (2 * dy as i64 - 1) * a2;
+            if err_plus > -new_err2 {
+                if dy <= 1 {
+                    break;
+                }
+                dy -= 1;
+                err -= new_err2;
+            }
+        }
+        while dx < a {
+            dx += 1;
+            canvas.set(xm + dx, ym);
+            if xm >= dx {
+                canvas.set(xm - dx, ym);
+            }
+        }
     }
 }
 
