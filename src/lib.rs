@@ -173,11 +173,11 @@ impl Canvas {
 
     /// Draw a ellipse inside the box `(x1, y1)` to `(x2, y2)` onto the `Canvas`.
     pub fn ellipse_box(&mut self, x1: u32, y1: u32, x2: u32, y2: u32) {
-        let delta_x = (x1 as i64 - x2 as i64) / 2;
-        let delta_y = (y1 as i64 - y2 as i64) / 2;
+        let delta_x = (x1 as i32 - x2 as i32) / 2;
+        let delta_y = (y1 as i32 - y2 as i32) / 2;
         self.ellipse_center(
-            (x2 as i64 + delta_x) as u32,
-            (y2 as i64 + delta_y) as u32,
+            (x2 as i32 + delta_x) as u32,
+            (y2 as i32 + delta_y) as u32,
             delta_x.abs() as u32,
             delta_y.abs() as u32
         )
@@ -185,11 +185,11 @@ impl Canvas {
 
     /// Draw a ellipse with the middle `(xm, ym)` and the radius a and b onto the `Canvas`.
     pub fn ellipse_center(&mut self, xm: u32, ym: u32, a: u32, b: u32) {
-        let a2: i64 = a as i64 * a as i64;
-        let b2: i64 = b as i64 * b as i64;
-        let mut dx: u32 = 0;
-        let mut dy: u32 = b;
-        let mut err: i64 = b2 - (2 * b as i64 - 1) * a2;
+        let a2 = a as i32 * a as i32;
+        let b2 = b as i32 * b as i32;
+        let mut dx = 0u32;
+        let mut dy = b;
+        let mut err: i32 = b2 - (2 * b as i32 - 1) * a2;
 
         loop {
             self.set(xm + dx, ym + dy);
@@ -204,12 +204,12 @@ impl Canvas {
             }
 
             let err_plus = err + err;
-            let new_err1 = (2 * dx as i64 + 1) * b2;
+            let new_err1 = (2 * dx as i32 + 1) * b2;
             if err_plus < new_err1 {
                 dx += 1;
                 err += new_err1;
             }
-            let new_err2 = (2 * dy as i64 - 1) * a2;
+            let new_err2 = (2 * dy as i32 - 1) * a2;
             if err_plus > -new_err2 {
                 if dy <= 1 {
                     break;
